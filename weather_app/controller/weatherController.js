@@ -26,7 +26,10 @@ module.exports = {
                     await mailService.transporter.sendMail(mailOptions);
                     res.status(200).send({
                         success: true,
-                        message: "Mail has been sent"
+                        message: "Mail has been sent",
+                        weatherIn: weatherData.location.name,
+                        temperature: weatherData.current.temp_c,
+                        weather: weatherData.current.condition.text
                     });
                 })
                 .catch((error) => {
