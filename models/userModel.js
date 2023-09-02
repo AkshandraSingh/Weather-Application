@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    favoritePlaces: {
+        type: [],
+        default: []
+    },
     isActive: {
         type: Boolean,
         default: true,
