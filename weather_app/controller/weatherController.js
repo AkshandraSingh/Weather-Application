@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const mailService = require('../../services/emailService');
 const userSchema = require('../../models/userModel')
+const weatherLogger = require('../../utils/weatherLoggers/weatherLogger')
 
 module.exports = {
     weatherInfo: async (req, res) => {
@@ -24,6 +25,7 @@ module.exports = {
                         Weather: ${weatherData.current.condition.text}`,
                     };
                     await mailService.transporter.sendMail(mailOptions);
+                    weatherLogger.log('info', 'Mail has been sent')
                     res.status(200).send({
                         success: true,
                         message: "Mail has been sent",
@@ -33,10 +35,16 @@ module.exports = {
                     });
                 })
                 .catch((error) => {
-                    console.error('Error:', error);
+                    weatherLogger.log('error', `Error: ${error.message}`)
+                    res.status(500).send({
+                        success: false,
+                        message: "Error!",
+                        error: error.message
+                    });
                 });
 
         } catch (error) {
+            weatherLogger.log('error', `Error: ${error.message}`)
             res.status(500).send({
                 success: false,
                 message: "Error!",
@@ -52,11 +60,13 @@ module.exports = {
             const userData = await userSchema.findById(userId)
             userData.favoritePlaces.push(place)
             await userData.save()
+            weatherLogger.log('info', 'Place is added to favorite')
             res.status(200).send({
                 success: true,
-                message: `${place} is Added to Favorite`
+                message: `${place} is added to favorite`
             })
         } catch (error) {
+            weatherLogger.log('error', `Error: ${error.message}`)
             res.status(500).send({
                 success: false,
                 message: "Error!",
@@ -72,6 +82,7 @@ module.exports = {
             const userData = await userSchema.findById(userId);
             const placeIndex = userData.favoritePlaces.indexOf(place);
             if (placeIndex === -1) {
+                weatherLogger.log('error', "Place is not in the user's favorite places")
                 return res.status(400).send({
                     success: false,
                     message: `${place} is not in the user's favorite places`,
@@ -79,11 +90,13 @@ module.exports = {
             }
             userData.favoritePlaces.splice(placeIndex, 1);
             await userData.save();
+            weatherLogger.log('info', 'Place has been removed from favorites')
             res.status(200).send({
                 success: true,
                 message: `${place} has been removed from favorites`,
             });
         } catch (error) {
+            weatherLogger.log('error', `Error: ${error.message}`)
             res.status(500).send({
                 success: false,
                 message: "Error!",
