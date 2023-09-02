@@ -1,0 +1,10 @@
+level error: Sep-02-2023 16:39:02 	Error: Cannot set headers after they are sent to the client
+level info: Sep-02-2023 16:56:38 	Place is added to favorite
+level info: Sep-02-2023 16:56:46 	Your all favorite places
+level info: Sep-02-2023 17:05:32 	Weather data found
+level error: Sep-02-2023 17:05:33 	Error: weatherData is not defined
+level info: Sep-02-2023 17:06:08 	Weather data found
+level info: Sep-02-2023 17:06:16 	Weather data found
+level error: Sep-02-2023 17:06:43 	Error: Request failed with status code 400
+level info: Sep-02-2023 17:07:06 	Weather data found
+level info: Sep-02-2023 17:07:28 	Weather data found

@@ -42,7 +42,6 @@ module.exports = {
                         error: error.message
                     });
                 });
-
         } catch (error) {
             weatherLogger.log('error', `Error: ${error.message}`)
             res.status(500).send({
@@ -104,4 +103,93 @@ module.exports = {
             });
         }
     },
+
+    listFavoritePlaces: async (req, res) => {
+        try {
+            const { userId } = req.params;
+            const userData = await userSchema.findById(userId);
+            const favoritePlaces = userData.favoritePlaces;
+            weatherLogger.log('info', "Your all favorite places")
+            res.status(200).send({
+                success: true,
+                message: "Your all favorite places",
+                data: favoritePlaces
+            });
+        } catch (error) {
+            weatherLogger.log('error', `Error: ${error.message}`);
+            res.status(500).send({
+                success: false,
+                message: "Error!",
+                error: error.message,
+            });
+        }
+    },
+
+    favoritePlacesWeather: async (req, res) => {
+        try {
+            const { userId } = req.params;
+            const userData = await userSchema.findById(userId);
+            const favoritePlaces = userData.favoritePlaces;
+            const apiKey = process.env.WEATHER_KEY;
+            const weatherResults = [];
+            for (const userCity of favoritePlaces) {
+                const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${userCity}`;
+                const response = await axios.get(apiUrl);
+                const weatherData = response.data;
+                weatherResults.push({
+                    location: weatherData.location.name,
+                    temperature: weatherData.current.temp_c,
+                    weather: weatherData.current.condition.text,
+                });
+            }
+            weatherLogger.log('info', 'Weather data fetched successfully')
+            res.status(200).send({
+                success: true,
+                message: "Weather data fetched successfully",
+                weatherData: weatherResults,
+            });
+        } catch (error) {
+            weatherLogger.log('error', `Error: ${error.message}`);
+            res.status(500).send({
+                success: false,
+                message: "Error!",
+                error: error.message,
+            });
+        }
+    },
+
+    searchWeather: async (req, res) => {
+        try {
+            const { city } = req.query
+            const apiKey = process.env.WEATHER_KEY;
+            const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
+            axios.get(apiUrl)
+                .then(async (response) => {
+                    const weatherData = response.data;
+                    weatherLogger.log('info', `Weather data found`)
+                    res.status(200).send({
+                        success: true,
+                        message: `Weather data found of ${city}`,
+                        weatherIn: weatherData.location.name,
+                        temperature: weatherData.current.temp_c,
+                        weather: weatherData.current.condition.text
+                    });
+                })
+                .catch((error) => {
+                    weatherLogger.log('error', `Error: ${error.message}`)
+                    res.status(500).send({
+                        success: false,
+                        message: "Error!",
+                        error: error.message
+                    });
+                });
+        } catch (error) {
+            weatherLogger.log('error', `Error: ${error.message}`);
+            res.status(500).send({
+                success: false,
+                message: "Error!",
+                error: error.message,
+            });
+        }
+    }
 };
