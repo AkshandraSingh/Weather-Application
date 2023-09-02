@@ -43,5 +43,52 @@ module.exports = {
                 error: error.message
             });
         }
-    }
+    },
+
+    addFavoritePlace: async (req, res) => {
+        try {
+            const { userId } = req.params
+            const place = req.body.place
+            const userData = await userSchema.findById(userId)
+            userData.favoritePlaces.push(place)
+            await userData.save()
+            res.status(200).send({
+                success: true,
+                message: `${place} is Added to Favorite`
+            })
+        } catch (error) {
+            res.status(500).send({
+                success: false,
+                message: "Error!",
+                error: error.message
+            });
+        }
+    },
+
+    removeFavoritePlace: async (req, res) => {
+        try {
+            const { userId } = req.params;
+            const place = req.body.place
+            const userData = await userSchema.findById(userId);
+            const placeIndex = userData.favoritePlaces.indexOf(place);
+            if (placeIndex === -1) {
+                return res.status(400).send({
+                    success: false,
+                    message: `${place} is not in the user's favorite places`,
+                });
+            }
+            userData.favoritePlaces.splice(placeIndex, 1);
+            await userData.save();
+            res.status(200).send({
+                success: true,
+                message: `${place} has been removed from favorites`,
+            });
+        } catch (error) {
+            res.status(500).send({
+                success: false,
+                message: "Error!",
+                error: error.message,
+            });
+        }
+    },
 };
