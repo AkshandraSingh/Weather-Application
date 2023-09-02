@@ -37,7 +37,7 @@ To install and run the Weather Application, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/ishansingh1010/Weather-Application>
    ```
 
 2. Install dependencies:
