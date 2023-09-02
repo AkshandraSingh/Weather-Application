@@ -50,7 +50,7 @@ module.exports = {
                 userEmail: userEmail
             });
             if (isUserExist) {
-                const hashPassword = await bcrypt.compare(req.body.userPassword, isUserExist.userPassword)
+                const hashPassword = await bcrypt.compare(userPassword, isUserExist.userPassword)
                 console.log(hashPassword)
                 if (hashPassword) {
                     const token = jwt.sign({ isUserExist }, process.env.SECRET_KEY, {
@@ -90,7 +90,6 @@ module.exports = {
             const isUserExist = await userSchema.findOne({
                 userEmail: userEmail
             });
-
             if (!isUserExist) {
                 userLogger.log('error', "Email not found")
                 return res.status(404).json({
