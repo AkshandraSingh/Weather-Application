@@ -15,12 +15,6 @@
    - [Current City Weather](#current-city-weather)
    - [Favorite Places](#favorite-places)
    - [View Favorite Places Weather](#view-favorite-places-weather)
-5. [API Endpoints](#api-endpoints)
-6. [MVC Pattern](#mvc-pattern)
-7. [Logger](#logger)
-8. [Validation](#validation)
-9. [Error Handling](#error-handling)
-10. [Contributing](#contributing)
 
 ---
 
@@ -117,32 +111,3 @@ To view the weather for your favorite places:
 1. Click on the "Favorite Places" section.
 2. Select a favorite place from the list.
 3. View the current weather data for the selected place.
-
-## API Endpoints
-
-- Document all API endpoints, their input parameters, and expected responses.
-- Include example requests and responses.
-
-## MVC Pattern
-
-- Explain the MVC (Model-View-Controller) pattern used in your application and how it helps in organizing code.
-
-## Logger
-
-- Describe how logging is implemented in your application.
-- Include information about log levels and log file locations.
-
-## Validation
-
-- Explain how data validation is handled in your application.
-- Include details about input validation and error handling.
-
-## Error Handling
-
-- Describe how errors are handled in your application.
-- Include information about error codes and possible error scenarios.
-
-## Contributing
-
-- Provide guidelines for contributing to the project.
-- Include information on how to report issues and submit pull requests.
